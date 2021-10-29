@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     marginTop: '35%',
   },
   startText: {
+    textAlign: 'center',
     fontFamily: 'Mulish',
     fontSize: 24,
     fontWeight: '700',
-    textAlign: 'center',
   },
   startTextLight: {
     color: theme.colors.neutral.active,
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     color: theme.colors.neutral.offWhite,
   },
   controls: {
-    textAlign: 'center',
     width: '100%',
   },
   termsBtn: {
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   termsBtnText: {
+    textAlign: 'center',
     fontFamily: 'Mulish',
     fontSize: 14,
     lineHeight: 24,

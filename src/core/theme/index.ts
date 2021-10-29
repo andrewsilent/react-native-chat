@@ -34,47 +34,47 @@ export const theme = {
     heading1: {
       fontSize: 32,
       lineHeight: 32,
-      fontWeight: 700,
+      fontWeight: '700',
     },
     heading2: {
       fontSize: 24,
       lineHeight: 24,
-      fontWeight: 700,
+      fontWeight: '700',
     },
     subheading1: {
       fontSize: 18,
       lineHeight: 30,
-      fontWeight: 600,
+      fontWeight: '600',
     },
     subheading2: {
       fontSize: 16,
       lineHeight: 28,
-      fontWeight: 600,
+      fontWeight: '600',
     },
     bodyText1: {
       fontSize: 14,
       lineHeight: 24,
-      fontWeight: 600,
+      fontWeight: '600',
     },
     bodyText2: {
       fontSize: 14,
       lineHeight: 24,
-      fontWeight: 400,
+      fontWeight: '400',
     },
     metadata1: {
       fontSize: 12,
       lineHeight: 20,
-      fontWeight: 400,
+      fontWeight: '400',
     },
     metadata2: {
       fontSize: 10,
       lineHeight: 16,
-      fontWeight: 400,
+      fontWeight: '400',
     },
     metadata3: {
       fontSize: 10,
       lineHeight: 16,
-      fontWeight: 600,
+      fontWeight: '600',
     },
   },
 };

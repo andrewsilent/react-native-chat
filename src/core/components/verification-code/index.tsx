@@ -18,16 +18,20 @@ export const VerificationCode = ({ isDefaultTheme, code }: VerificationCodeProps
 
   return (
     <View style={styles.code}>
-      <View style={[styles.codeItem, backgroundColor(0)]}>
+      <View style={styles.codeItem}>
+        <View style={[styles.codeItemBackground, backgroundColor(0)]} />
         <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[0]}</Text>
       </View>
-      <View style={[styles.codeItem, backgroundColor(1)]}>
+      <View style={styles.codeItem}>
+        <View style={[styles.codeItemBackground, backgroundColor(1)]} />
         <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[1]}</Text>
       </View>
-      <View style={[styles.codeItem, backgroundColor(2)]}>
+      <View style={styles.codeItem}>
+        <View style={[styles.codeItemBackground, backgroundColor(2)]} />
         <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[2]}</Text>
       </View>
-      <View style={[styles.codeItem, backgroundColor(3)]}>
+      <View style={styles.codeItem}>
+        <View style={[styles.codeItemBackground, backgroundColor(3)]} />
         <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[3]}</Text>
       </View>
     </View>
@@ -46,25 +50,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   codeItem: {
+    position: 'relative',
+    flex: 1,
+    minHeight: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  codeItemBackground: {
+    position: 'absolute',
     backgroundColor: theme.colors.neutral.line,
     borderRadius: 50,
     width: 24,
     height: 24,
-    textAlign: 'center',
-    alignSelf: 'center',
-    position: 'relative',
   },
   codeItemText: {
     fontFamily: 'Mulish',
     fontSize: 32,
-    fontWeight: 700,
-    top: '50%',
-    left: '50%',
-    position: 'absolute',
-    transform: [
-      { translateY: '-50%' },
-      { translateX: '-50%' },
-    ],
+    lineHeight: 32,
+    fontWeight: '700',
   },
 });
 

@@ -87,10 +87,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.neutral.active,
   },
   title: {
-    textAlign: 'center',
     marginTop: 60,
   },
   titleText: {
+    textAlign: 'center',
     fontFamily: 'Mulish',
     fontSize: 24,
     fontWeight: '700',
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     color: theme.colors.neutral.offWhite,
   },
   subtitleText: {
+    textAlign: 'center',
     fontFamily: 'Mulish',
     fontSize: 14,
     lineHeight: 24,
@@ -120,10 +121,11 @@ const styles = StyleSheet.create({
   },
   resendBtn: {},
   resendBtnText: {
+    textAlign: 'center',
     fontFamily: 'Mulish',
     fontSize: 16,
     lineHeight: 28,
-    fontWeight: 600,
+    fontWeight: '600',
     paddingHorizontal: 14,
     paddingVertical: 8,
   },

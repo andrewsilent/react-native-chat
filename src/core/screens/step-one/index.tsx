@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Text, View, Keyboard, StyleSheet} from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 
 import { PrimaryButton } from '../../components/buttons/primary';
@@ -9,6 +9,11 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
   const phoneInput = useRef<PhoneInput>('');
   const [isValid, setIsValid] = useState(false);
 
+  useEffect(() => {
+    if (isValid) {
+      Keyboard.dismiss();
+    }
+  }, [isValid]);
 
   const isDisabled = useMemo(() => !isValid, [isValid]);
 
@@ -62,7 +67,6 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
             backgroundColor: isDefaultTheme ? theme.colors.neutral.offWhite : theme.colors.neutral.dark,
             color: theme.colors.neutral.disabled,
             fontSize: 14,
-            lineHeight: 24,
             fontWeight: '600',
             padding: 8,
             borderTopRightRadius: 4,
@@ -80,10 +84,9 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
               borderRadius: 4,
               fontFamily: 'Mulish',
               fontSize: 14,
-              lineHeight: 24,
+              textAlignVertical: 'top',
               fontWeight: '600',
               padding: 8,
-              outline: 'none',
               color: theme.colors.neutral.disabled,
               backgroundColor: isDefaultTheme ? theme.colors.neutral.offWhite : theme.colors.neutral.dark,
             },
@@ -116,13 +119,13 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.neutral.active,
   },
   title: {
-    textAlign: 'center',
     marginTop: 60,
   },
   titleText: {
     fontFamily: 'Mulish',
     fontSize: 24,
     fontWeight: '700',
+    textAlign: 'center',
   },
   titleTextLight: {
     color: theme.colors.neutral.active,
@@ -134,6 +137,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish',
     fontSize: 14,
     lineHeight: 24,
+    textAlign: 'center',
     marginTop: 8,
   },
   subtitleTextLight: {
