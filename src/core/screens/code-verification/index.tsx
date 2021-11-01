@@ -1,24 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Vibration, Modal, Pressable } from 'react-native';
 
 import { VerificationCode } from '../../components/verification-code';
 import { PhoneNumber } from '../../interfaces';
 import { theme } from '../../theme';
 
 export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: CodeVerificationProps) => {
-  const control = '5432';
-  const example = '';
+  const control = '543211';
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const codeInput = useRef('');
-
-  useEffect(() => {
-    setCode(example);
-  }, []);
 
   useEffect(() => {
     if (code === control) {
       setVerified(true);
+    }
+
+    if (code.length === control.length) {
+      Vibration.vibrate(100);
+      setCode('');
+      setModalVisible(true);
+      setTimeout(() => setModalVisible(false), 3000);
     }
   }, [control, code]);
 
@@ -28,32 +31,58 @@ export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: Co
     }
   }, [verified]);
 
-  const resendBtnTextTheme = {
+  const containerTheme = useMemo(() => ({
+    backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
+  }), [isDefaultTheme]);
+
+  const titleTextTheme = useMemo(() => ({
+    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+  }), [isDefaultTheme]);
+
+  const subtitleTextTheme = useMemo(() => ({
+    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+  }), [isDefaultTheme]);
+
+  const resendBtnTextTheme = useMemo(() => ({
     color: isDefaultTheme ? theme.colors.brandColor.default : theme.colors.neutral.offWhite,
-  };
+  }), [isDefaultTheme]);
+
+  const modalWindowTheme = useMemo(() => ({
+    backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.dark,
+  }), [isDefaultTheme]);
+
+  const modalMessageTheme = useMemo(() => ({
+    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+  }), [isDefaultTheme]);
+
+  const modalBtnTextTheme = useMemo(() => ({
+    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+  }), [isDefaultTheme]);
 
   const resendBtnHandler = () => {
     console.log('Resend Code');
   };
 
   return (
-    <View style={[styles.container, isDefaultTheme ? styles.containerLight : styles.containerDark]}>
+    <View style={[styles.container, containerTheme]}>
       <View style={styles.title}>
-        <Text style={[styles.titleText, isDefaultTheme ? styles.titleTextLight : styles.titleTextDark]}>
+        <Text style={[styles.titleText, titleTextTheme]}>
           Enter Code
         </Text>
-        <Text style={[styles.subtitleText, isDefaultTheme ? styles.subtitleTextLight : styles.subtitleTextDark]}>
+        <Text
+          style={[styles.subtitleText, subtitleTextTheme]}>
           We have sent you an SMS with the code to +{phoneNumber.code} {phoneNumber.number}
         </Text>
       </View>
       <VerificationCode
         isDefaultTheme={isDefaultTheme}
         code={code}
+        codeLength={control.length}
       />
       <TextInput
         autoFocus={true}
         keyboardType={'numeric'}
-        maxLength={4}
+        maxLength={6}
         onChangeText={text => {
           setCode(text);
         }}
@@ -68,6 +97,31 @@ export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: Co
           Resend Code
         </Text>
       </TouchableOpacity>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        RequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={[styles.modalWindow, modalWindowTheme]}>
+            <Text style={[styles.modalTitle]}>
+              Error
+            </Text>
+            <Text style={[styles.modalMessage, modalMessageTheme]}>
+              Wrong verification code
+            </Text>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={styles.modalBtn}
+            >
+              <Text style={[styles.modalBtnText, modalBtnTextTheme]}>
+                OK
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -79,12 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingBottom: 36,
-  },
-  containerLight: {
-    backgroundColor: theme.colors.neutral.white,
-  },
-  containerDark: {
-    backgroundColor: theme.colors.neutral.active,
+    position: 'relative',
   },
   title: {
     marginTop: 60,
@@ -95,24 +144,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
   },
-  titleTextLight: {
-    color: theme.colors.neutral.active,
-  },
-  titleTextDark: {
-    color: theme.colors.neutral.offWhite,
-  },
   subtitleText: {
     textAlign: 'center',
     fontFamily: 'Mulish',
     fontSize: 14,
     lineHeight: 24,
     marginTop: 8,
-  },
-  subtitleTextLight: {
-    color: theme.colors.neutral.active,
-  },
-  subtitleTextDark: {
-    color: theme.colors.neutral.offWhite,
   },
   codeInput: {
     position: 'absolute',
@@ -128,6 +165,60 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingHorizontal: 14,
     paddingVertical: 8,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height: '100%',
+    width: '100%',
+  },
+  modalWindow: {
+    width: 300,
+    flex: 1,
+    flexGrow: 0,
+    flexBasis: 'auto',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 4,
+    overflow: 'hidden',
+    shadowColor: theme.colors.neutral.dark,
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 20,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  modalTitle: {
+    width: '100%',
+    fontFamily: 'Mulish',
+    fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: theme.colors.accent.danger,
+    color: theme.colors.neutral.white,
+  },
+  modalMessage: {
+    height: '100%',
+    fontFamily: 'Mulish',
+    fontSize: 16,
+    marginTop: 24,
+    marginBottom: 20,
+    paddingHorizontal: 20
+  },
+  modalBtn: {
+    width: '100%',
+  },
+  modalBtnText: {
+    fontFamily: 'Mulish',
+    fontSize: 20,
+    marginTop: 12,
+    padding: 12,
+    textAlign: 'center',
+    borderTopWidth: 1,
+    borderColor: theme.colors.neutral.line,
   },
 });
 

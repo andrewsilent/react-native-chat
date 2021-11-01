@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 
 import { theme } from '../../theme';
 
-export const VerificationCode = ({ isDefaultTheme, code }: VerificationCodeProps) => {
+export const VerificationCode = ({ isDefaultTheme, code, codeLength }: VerificationCodeProps) => {
   const backgroundColor = useCallback((id: number) => ({
     backgroundColor: code[id]
       ? 'transparent'
@@ -18,22 +18,13 @@ export const VerificationCode = ({ isDefaultTheme, code }: VerificationCodeProps
 
   return (
     <View style={styles.code}>
-      <View style={styles.codeItem}>
-        <View style={[styles.codeItemBackground, backgroundColor(0)]} />
-        <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[0]}</Text>
-      </View>
-      <View style={styles.codeItem}>
-        <View style={[styles.codeItemBackground, backgroundColor(1)]} />
-        <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[1]}</Text>
-      </View>
-      <View style={styles.codeItem}>
-        <View style={[styles.codeItemBackground, backgroundColor(2)]} />
-        <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[2]}</Text>
-      </View>
-      <View style={styles.codeItem}>
-        <View style={[styles.codeItemBackground, backgroundColor(3)]} />
-        <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[3]}</Text>
-      </View>
+      {Array(codeLength).fill(null).map((e, i) => (
+          <View key={i} style={styles.codeItem}>
+            <View style={[styles.codeItemBackground, backgroundColor(i)]}/>
+            <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[i]}</Text>
+          </View>
+        )
+      )}
     </View>
   );
 };
@@ -74,4 +65,5 @@ const styles = StyleSheet.create({
 interface VerificationCodeProps {
   isDefaultTheme: boolean;
   code: string;
+  codeLength: number;
 }
