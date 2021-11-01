@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { theme } from '../../../theme';
 
 export const PrimaryButton = ({ isDefaultTheme, text, onPressHandler, isDisabled = false }: PrimaryButtonProps) => {
-  const primaryBtnTheme = {
+  const primaryBtnTheme = useMemo(() => ({
     backgroundColor: isDefaultTheme
       ? isDisabled ? theme.colors.brandColor.light : theme.colors.brandColor.default :
       isDisabled ? theme.colors.brandColor.light : theme.colors.brandColor.darkMode,
-  };
+  }), [isDefaultTheme, isDisabled]);
 
   return (
     <TouchableOpacity
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
 interface PrimaryButtonProps {
   text: string;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   isDefaultTheme: boolean;
   onPressHandler: Function;
 }

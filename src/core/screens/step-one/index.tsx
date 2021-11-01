@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Text, View, Keyboard, StyleSheet} from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View, Keyboard, StyleSheet } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
 
 export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneProps) => {
-  const phoneInput = useRef<PhoneInput>('');
+  const phoneInput = useRef<PhoneInput>();
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
@@ -17,21 +17,33 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
 
   const isDisabled = useMemo(() => !isValid, [isValid]);
 
+  const containerTheme = useMemo(() => ({
+    backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
+  }), [isDefaultTheme]);
+
+  const titleTextTheme = useMemo(() => ({
+    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+  }), [isDefaultTheme]);
+
+  const subtitleTextTheme = useMemo(() => ({
+    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+  }), [isDefaultTheme]);
+
   const onPressHandler = useCallback(() => {
     setPhoneNumber({
-      code: phoneInput.current.state.code,
-      number: phoneInput.current.state.number,
+      code: phoneInput.current?.state.code || '',
+      number: phoneInput.current?.state.number || '',
     });
     navigation.navigate('CodeVerification');
   }, [navigation, setPhoneNumber]);
 
   return (
-    <View style={[styles.container, isDefaultTheme ? styles.containerLight : styles.containerDark]}>
+    <View style={[styles.container, containerTheme]}>
       <View style={styles.title}>
-        <Text style={[styles.titleText, isDefaultTheme ? styles.titleTextLight : styles.titleTextDark]}>
+        <Text style={[styles.titleText, titleTextTheme]}>
           Enter Your Phone Number
         </Text>
-        <Text style={[styles.subtitleText, isDefaultTheme ? styles.subtitleTextLight : styles.subtitleTextDark]}>
+        <Text style={[styles.subtitleText, subtitleTextTheme]}>
           Please confirm your country code and enter your phone number
         </Text>
       </View>
@@ -41,7 +53,7 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
           defaultCode='UA'
           autoFocus
           onChangeText={(text) => {
-            setIsValid(phoneInput.current?.isValidNumber(text));
+            setIsValid(phoneInput.current?.isValidNumber(text) || false);
           }}
           disableArrowIcon={true}
           placeholder='Phone Number'
@@ -112,12 +124,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 36,
   },
-  containerLight: {
-    backgroundColor: theme.colors.neutral.white,
-  },
-  containerDark: {
-    backgroundColor: theme.colors.neutral.active,
-  },
   title: {
     marginTop: 60,
   },
@@ -127,24 +133,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  titleTextLight: {
-    color: theme.colors.neutral.active,
-  },
-  titleTextDark: {
-    color: theme.colors.neutral.offWhite,
-  },
   subtitleText: {
     fontFamily: 'Mulish',
     fontSize: 14,
     lineHeight: 24,
     textAlign: 'center',
     marginTop: 8,
-  },
-  subtitleTextLight: {
-    color: theme.colors.neutral.active,
-  },
-  subtitleTextDark: {
-    color: theme.colors.neutral.offWhite,
   },
   phone: {
     marginTop: 30,
