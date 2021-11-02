@@ -17,7 +17,7 @@ export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: Co
       setVerified(true);
     }
 
-    if (code.length === control.length) {
+    if (code.length === control.length && code !== control) {
       Vibration.vibrate(100);
       setCode('');
       setModalVisible(true);
@@ -27,7 +27,7 @@ export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: Co
 
   useEffect(() => {
     if (verified) {
-      navigation.navigate('Start');
+      navigation.navigate('CreateProfile');
     }
   }, [verified]);
 

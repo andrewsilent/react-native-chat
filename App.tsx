@@ -8,6 +8,7 @@ import { theme } from './src/core/theme';
 import { StepOne } from './src/core/screens/step-one';
 import { StartScreen } from './src/core/screens/start';
 import { CodeVerification } from './src/core/screens/code-verification';
+import { CreateProfile } from './src/core/screens/create-profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +65,19 @@ export default function App() {
           }}
         >
           {props => <CodeVerification {...props} isDefaultTheme={isDefaultTheme} phoneNumber={phoneNumber} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name='CreateProfile'
+          options={{
+            title: 'Your Profile',
+            headerStyle: {
+              backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
+              borderBottomWidth: 0,
+            },
+            headerTintColor: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.white,
+          }}
+        >
+          {props => <CreateProfile {...props} isDefaultTheme={isDefaultTheme} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
