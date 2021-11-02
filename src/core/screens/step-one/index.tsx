@@ -99,7 +99,7 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
               textAlignVertical: 'top',
               fontWeight: '600',
               padding: 8,
-              color: theme.colors.neutral.disabled,
+              color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
               backgroundColor: isDefaultTheme ? theme.colors.neutral.offWhite : theme.colors.neutral.dark,
             },
           }}
