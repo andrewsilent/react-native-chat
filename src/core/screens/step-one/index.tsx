@@ -1,13 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, Keyboard, StyleSheet } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
+import { useNavigation } from '@react-navigation/native';
+import { ReactReduxContext } from 'react-redux';
 
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
+import { user } from '../../redux/reducers/user_reducer';
 
-export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneProps) => {
-  const phoneInput = useRef<PhoneInput>();
+export const StepOne = ({ isDefaultTheme }: StepOneProps) => {
+  const phoneInput = useRef<PhoneInput>(null);
   const [isValid, setIsValid] = useState(false);
+  const {
+    store: { dispatch },
+  } = useContext(ReactReduxContext);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (isValid) {
@@ -17,32 +24,41 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
 
   const isDisabled = useMemo(() => !isValid, [isValid]);
 
-  const containerTheme = useMemo(() => ({
-    backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
-  }), [isDefaultTheme]);
+  const containerTheme = useMemo(
+    () => ({
+      backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
+    }),
+    [isDefaultTheme]
+  );
 
-  const titleTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const titleTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
-  const subtitleTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const subtitleTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
   const onPressHandler = useCallback(() => {
-    setPhoneNumber({
-      code: phoneInput.current?.state.code || '',
-      number: phoneInput.current?.state.number || '',
-    });
+    dispatch(
+      user.actions.setPhoneNumber({
+        code: phoneInput.current?.state.code || '',
+        number: phoneInput.current?.state.number || '',
+      })
+    );
     navigation.navigate('CodeVerification');
-  }, [navigation, setPhoneNumber]);
+  }, [navigation]);
 
   return (
     <View style={[styles.container, containerTheme]}>
       <View style={styles.title}>
-        <Text style={[styles.titleText, titleTextTheme]}>
-          Enter Your Phone Number
-        </Text>
+        <Text style={[styles.titleText, titleTextTheme]}>Enter Your Phone Number</Text>
         <Text style={[styles.subtitleText, subtitleTextTheme]}>
           Please confirm your country code and enter your phone number
         </Text>
@@ -50,13 +66,11 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
       <View style={styles.phone}>
         <PhoneInput
           ref={phoneInput}
-          defaultCode='UA'
+          defaultCode="UA"
           autoFocus
-          onChangeText={(text) => {
-            setIsValid(phoneInput.current?.isValidNumber(text) || false);
-          }}
+          onChangeText={text => setIsValid(phoneInput.current?.isValidNumber(text) || false)}
           disableArrowIcon={true}
-          placeholder='Phone Number'
+          placeholder="Phone Number"
           containerStyle={{
             backgroundColor: isDefaultTheme ? theme.colors.neutral.offWhite : theme.colors.neutral.dark,
           }}
@@ -90,7 +104,9 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
             width: '100%',
           }}
           textInputProps={{
-            placeholderTextColor: theme.colors.neutral.disabled, keyboardType: 'numeric', style: {
+            placeholderTextColor: theme.colors.neutral.disabled,
+            keyboardType: 'numeric',
+            style: {
               marginLeft: 10,
               width: '100%',
               borderRadius: 4,
@@ -108,7 +124,6 @@ export const StepOne = ({ isDefaultTheme, navigation, setPhoneNumber }: StepOneP
       <PrimaryButton
         isDefaultTheme={isDefaultTheme}
         text={'Continue'}
-        navigation={navigation}
         isDisabled={isDisabled}
         onPressHandler={onPressHandler}
       />
@@ -147,7 +162,5 @@ const styles = StyleSheet.create({
 });
 
 interface StepOneProps {
-  navigation: object;
   isDefaultTheme: boolean;
-  setPhoneNumber: Function;
 }

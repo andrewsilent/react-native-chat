@@ -4,27 +4,34 @@ import { Text, View, StyleSheet } from 'react-native';
 import { theme } from '../../theme';
 
 export const VerificationCode = ({ isDefaultTheme, code, codeLength }: VerificationCodeProps) => {
-  const backgroundColor = useCallback((id: number) => ({
-    backgroundColor: code[id]
-      ? 'transparent'
-      : isDefaultTheme
+  const backgroundColor = useCallback(
+    (id: number) => ({
+      backgroundColor: code[id]
+        ? 'transparent'
+        : isDefaultTheme
         ? theme.colors.neutral.offWhite
         : theme.colors.neutral.dark,
-  }), [code]);
+    }),
+    [code]
+  );
 
-  const codeItemTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const codeItemTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
   return (
     <View style={styles.code}>
-      {Array(codeLength).fill(null).map((e, i) => (
+      {Array(codeLength)
+        .fill(null)
+        .map((e, i) => (
           <View key={i} style={styles.codeItem}>
-            <View style={[styles.codeItemBackground, backgroundColor(i)]}/>
+            <View style={[styles.codeItemBackground, backgroundColor(i)]} />
             <Text style={[styles.codeItemText, codeItemTextTheme]}>{code[i]}</Text>
           </View>
-        )
-      )}
+        ))}
     </View>
   );
 };

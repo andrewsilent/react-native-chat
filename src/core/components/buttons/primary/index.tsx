@@ -4,21 +4,26 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../../../theme';
 
 export const PrimaryButton = ({ isDefaultTheme, text, onPressHandler, isDisabled = false }: PrimaryButtonProps) => {
-  const primaryBtnTheme = useMemo(() => ({
-    backgroundColor: isDefaultTheme
-      ? isDisabled ? theme.colors.brandColor.light : theme.colors.brandColor.default :
-      isDisabled ? theme.colors.brandColor.light : theme.colors.brandColor.darkMode,
-  }), [isDefaultTheme, isDisabled]);
+  const primaryBtnTheme = useMemo(
+    () => ({
+      backgroundColor: isDefaultTheme
+        ? isDisabled
+          ? theme.colors.brandColor.light
+          : theme.colors.brandColor.default
+        : isDisabled
+        ? theme.colors.brandColor.light
+        : theme.colors.brandColor.darkMode,
+    }),
+    [isDefaultTheme, isDisabled]
+  );
 
   return (
     <TouchableOpacity
       style={[styles.primaryBtn, primaryBtnTheme]}
-      onPress={onPressHandler}
+      onPress={() => onPressHandler()}
       disabled={isDisabled}
     >
-      <Text style={styles.primaryBtnText}>
-        {text}
-      </Text>
+      <Text style={styles.primaryBtnText}>{text}</Text>
     </TouchableOpacity>
   );
 };

@@ -1,45 +1,52 @@
 import React, { useCallback, useMemo } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import start from '../../assets/start.png';
 import startDark from '../../assets/start-dark.png';
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
 
-export const StartScreen = ({ navigation, isDefaultTheme }: StartScreenProps) => {
-  const containerTheme = useMemo(() => ({
-    backgroundColor : isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
-  }), [isDefaultTheme]);
+export const StartScreen = ({ isDefaultTheme }: StartScreenProps) => {
+  const navigation = useNavigation();
 
-  const startTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const containerTheme = useMemo(
+    () => ({ backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active }),
+    [isDefaultTheme]
+  );
 
-  const termsBtnTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme])
+  const startTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
+
+  const termsBtnTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
   const termsBtnHandler = useCallback(() => {
+    // eslint-disable-next-line no-console
     console.log('Terms & Privacy Policy');
   }, []);
 
   const onPressHandler = useCallback(() => {
     navigation.navigate('StepOne');
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={[styles.container, containerTheme]}>
       <Image source={isDefaultTheme ? start : startDark} style={styles.startImg} />
-      <Text style={[styles.startText, startTextTheme]}>
-        Connect easily with your family and friends over countries
-      </Text>
+      <Text style={[styles.startText, startTextTheme]}>Connect easily with your family and friends over countries</Text>
       <View style={styles.controls}>
         <TouchableOpacity style={styles.termsBtn} onPress={termsBtnHandler}>
-          <Text style={[styles.termsBtnText, termsBtnTextTheme]}>
-            Terms & Privacy Policy
-          </Text>
+          <Text style={[styles.termsBtnText, termsBtnTextTheme]}>Terms & Privacy Policy</Text>
         </TouchableOpacity>
-        <PrimaryButton isDefaultTheme={isDefaultTheme} navigation={navigation} onPressHandler={onPressHandler} text={'Start Messaging'} />
+        <PrimaryButton isDefaultTheme={isDefaultTheme} onPressHandler={onPressHandler} text={'Start Messaging'} />
       </View>
     </View>
   );
@@ -84,6 +91,5 @@ const styles = StyleSheet.create({
 });
 
 interface StartScreenProps {
-  navigation: object;
   isDefaultTheme: boolean;
 }

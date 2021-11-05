@@ -3,8 +3,8 @@ export interface PhoneNumber {
   number: string;
 }
 
-export interface Avatar {
-  height: number,
-  width: number,
-  localUri: string,
+export interface UserPhoto {
+  height?: number;
+  width?: number;
+  localUri?: string;
 }

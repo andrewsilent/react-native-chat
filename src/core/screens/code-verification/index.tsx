@@ -1,16 +1,22 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Vibration, Modal, Pressable } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { VerificationCode } from '../../components/verification-code';
 import { PhoneNumber } from '../../interfaces';
 import { theme } from '../../theme';
+import { useNavigation } from '@react-navigation/native';
+import { RootState } from '../../redux/store';
 
-export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: CodeVerificationProps) => {
+export const CodeVerification = ({ isDefaultTheme }: CodeVerificationProps) => {
+  const phoneNumber: PhoneNumber = useSelector((state: RootState) => state.user.phoneNumber);
   const control = '543211';
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const codeInput = useRef('');
+  const codeInput = useRef(null);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (code === control) {
@@ -31,54 +37,69 @@ export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: Co
     }
   }, [verified]);
 
-  const containerTheme = useMemo(() => ({
-    backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
-  }), [isDefaultTheme]);
+  const containerTheme = useMemo(
+    () => ({
+      backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
+    }),
+    [isDefaultTheme]
+  );
 
-  const titleTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const titleTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
-  const subtitleTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const subtitleTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
-  const resendBtnTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.brandColor.default : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const resendBtnTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.brandColor.default : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
-  const modalWindowTheme = useMemo(() => ({
-    backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.dark,
-  }), [isDefaultTheme]);
+  const modalWindowTheme = useMemo(
+    () => ({
+      backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.dark,
+    }),
+    [isDefaultTheme]
+  );
 
-  const modalMessageTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const modalMessageTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
-  const modalBtnTextTheme = useMemo(() => ({
-    color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-  }), [isDefaultTheme]);
+  const modalBtnTextTheme = useMemo(
+    () => ({
+      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+    }),
+    [isDefaultTheme]
+  );
 
   const resendBtnHandler = () => {
+    // eslint-disable-next-line no-console
     console.log('Resend Code');
   };
 
   return (
     <View style={[styles.container, containerTheme]}>
       <View style={styles.title}>
-        <Text style={[styles.titleText, titleTextTheme]}>
-          Enter Code
-        </Text>
-        <Text
-          style={[styles.subtitleText, subtitleTextTheme]}>
+        <Text style={[styles.titleText, titleTextTheme]}>Enter Code</Text>
+        <Text style={[styles.subtitleText, subtitleTextTheme]}>
           We have sent you an SMS with the code to +{phoneNumber.code} {phoneNumber.number}
         </Text>
       </View>
-      <VerificationCode
-        isDefaultTheme={isDefaultTheme}
-        code={code}
-        codeLength={control.length}
-      />
+      <VerificationCode isDefaultTheme={isDefaultTheme} code={code} codeLength={control.length} />
       <TextInput
         autoFocus={true}
         keyboardType={'numeric'}
@@ -90,34 +111,18 @@ export const CodeVerification = ({ navigation, isDefaultTheme, phoneNumber }: Co
         contextMenuHidden={true}
         style={styles.codeInput}
         ref={codeInput}
-        onBlur={() => codeInput.current.focus()}
+        onBlur={() => codeInput.current?.focus()}
       />
       <TouchableOpacity style={styles.resendBtn} onPress={resendBtnHandler}>
-        <Text style={[styles.resendBtnText, resendBtnTextTheme]}>
-          Resend Code
-        </Text>
+        <Text style={[styles.resendBtnText, resendBtnTextTheme]}>Resend Code</Text>
       </TouchableOpacity>
-      <Modal
-        visible={modalVisible}
-        animationType="fade"
-        transparent={true}
-        RequestClose={() => setModalVisible(false)}
-      >
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={[styles.modalWindow, modalWindowTheme]}>
-            <Text style={[styles.modalTitle]}>
-              Error
-            </Text>
-            <Text style={[styles.modalMessage, modalMessageTheme]}>
-              Wrong verification code
-            </Text>
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={styles.modalBtn}
-            >
-              <Text style={[styles.modalBtnText, modalBtnTextTheme]}>
-                OK
-              </Text>
+            <Text style={[styles.modalTitle]}>Error</Text>
+            <Text style={[styles.modalMessage, modalMessageTheme]}>Wrong verification code</Text>
+            <Pressable onPress={() => setModalVisible(false)} style={styles.modalBtn}>
+              <Text style={[styles.modalBtnText, modalBtnTextTheme]}>OK</Text>
             </Pressable>
           </View>
         </View>
@@ -206,7 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 24,
     marginBottom: 20,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   modalBtn: {
     width: '100%',
@@ -223,7 +228,5 @@ const styles = StyleSheet.create({
 });
 
 interface CodeVerificationProps {
-  navigation: object;
   isDefaultTheme: boolean;
-  phoneNumber: PhoneNumber;
 }
