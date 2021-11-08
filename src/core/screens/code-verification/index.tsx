@@ -3,20 +3,19 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput, Vibration, Modal, 
 import { useSelector } from 'react-redux';
 
 import { VerificationCode } from '../../components/verification-code';
-import { PhoneNumber } from '../../interfaces';
+import { CodeVerificationProps, PhoneNumber } from '../../interfaces';
 import { theme } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
 import { RootState } from '../../redux/store';
 
-export const CodeVerification = ({ isDefaultTheme }: CodeVerificationProps) => {
+export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
   const phoneNumber: PhoneNumber = useSelector((state: RootState) => state.user.phoneNumber);
   const control = '543211';
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const codeInput = useRef(null);
-
-  const navigation = useNavigation();
+  const codeInput = useRef<TextInput>(null);
 
   useEffect(() => {
     if (code === control) {
@@ -35,7 +34,7 @@ export const CodeVerification = ({ isDefaultTheme }: CodeVerificationProps) => {
     if (verified) {
       navigation.navigate('CreateProfile');
     }
-  }, [verified]);
+  }, [verified, navigation]);
 
   const containerTheme = useMemo(
     () => ({
@@ -226,7 +225,3 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.neutral.line,
   },
 });
-
-interface CodeVerificationProps {
-  isDefaultTheme: boolean;
-}

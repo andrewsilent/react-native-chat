@@ -1,14 +1,26 @@
-import React, { useCallback, useMemo } from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import { Text, View, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { ReactReduxContext, useSelector } from 'react-redux';
 
 import start from '../../assets/start.png';
 import startDark from '../../assets/start-dark.png';
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
+import { view } from '../../redux/reducers/view_reducer';
+import { RootState } from '../../redux/store';
+import { StartScreenProps } from '../../interfaces';
 
-export const StartScreen = ({ isDefaultTheme }: StartScreenProps) => {
-  const navigation = useNavigation();
+export const StartScreen = ({ navigation }: StartScreenProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
+  const {
+    store: { dispatch },
+  } = useContext(ReactReduxContext);
+  const devicePlatform = Platform;
+
+  useEffect(() => {
+    dispatch(view.actions.setDevicePlatform(devicePlatform));
+  }, [dispatch, devicePlatform]);
 
   const containerTheme = useMemo(
     () => ({ backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active }),
@@ -46,7 +58,7 @@ export const StartScreen = ({ isDefaultTheme }: StartScreenProps) => {
         <TouchableOpacity style={styles.termsBtn} onPress={termsBtnHandler}>
           <Text style={[styles.termsBtnText, termsBtnTextTheme]}>Terms & Privacy Policy</Text>
         </TouchableOpacity>
-        <PrimaryButton isDefaultTheme={isDefaultTheme} onPressHandler={onPressHandler} text={'Start Messaging'} />
+        <PrimaryButton onPressHandler={onPressHandler} text={'Start Messaging'} />
       </View>
     </View>
   );
@@ -89,7 +101,3 @@ const styles = StyleSheet.create({
     color: theme.colors.neutral.active,
   },
 });
-
-interface StartScreenProps {
-  isDefaultTheme: boolean;
-}

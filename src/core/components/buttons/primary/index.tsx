@@ -1,9 +1,13 @@
 import React, { useMemo } from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { theme } from '../../../theme';
+import { RootState } from '../../../redux/store';
 
-export const PrimaryButton = ({ isDefaultTheme, text, onPressHandler, isDisabled = false }: PrimaryButtonProps) => {
+export const PrimaryButton = ({ text, onPressHandler, isDisabled = false }: PrimaryButtonProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
   const primaryBtnTheme = useMemo(
     () => ({
       backgroundColor: isDefaultTheme
@@ -48,6 +52,5 @@ const styles = StyleSheet.create({
 interface PrimaryButtonProps {
   text: string;
   isDisabled?: boolean;
-  isDefaultTheme: boolean;
   onPressHandler: Function;
 }

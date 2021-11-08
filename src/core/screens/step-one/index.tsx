@@ -1,20 +1,22 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, Keyboard, StyleSheet } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
-import { useNavigation } from '@react-navigation/native';
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext, useSelector } from 'react-redux';
 
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
 import { user } from '../../redux/reducers/user_reducer';
+import { RootState } from '../../redux/store';
+import { StepOneProps } from '../../interfaces';
 
-export const StepOne = ({ isDefaultTheme }: StepOneProps) => {
+export const StepOne = ({ navigation }: StepOneProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
   const phoneInput = useRef<PhoneInput>(null);
   const [isValid, setIsValid] = useState(false);
   const {
     store: { dispatch },
   } = useContext(ReactReduxContext);
-  const navigation = useNavigation();
 
   useEffect(() => {
     if (isValid) {
@@ -53,7 +55,7 @@ export const StepOne = ({ isDefaultTheme }: StepOneProps) => {
       })
     );
     navigation.navigate('CodeVerification');
-  }, [navigation]);
+  }, [dispatch, navigation]);
 
   return (
     <View style={[styles.container, containerTheme]}>
@@ -121,12 +123,7 @@ export const StepOne = ({ isDefaultTheme }: StepOneProps) => {
           }}
         />
       </View>
-      <PrimaryButton
-        isDefaultTheme={isDefaultTheme}
-        text={'Continue'}
-        isDisabled={isDisabled}
-        onPressHandler={onPressHandler}
-      />
+      <PrimaryButton text={'Continue'} isDisabled={isDisabled} onPressHandler={onPressHandler} />
     </View>
   );
 };
@@ -160,7 +157,3 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 });
-
-interface StepOneProps {
-  isDefaultTheme: boolean;
-}

@@ -12,7 +12,7 @@ export const VerificationCode = ({ isDefaultTheme, code, codeLength }: Verificat
         ? theme.colors.neutral.offWhite
         : theme.colors.neutral.dark,
     }),
-    [code]
+    [code, isDefaultTheme]
   );
 
   const codeItemTextTheme = useMemo(

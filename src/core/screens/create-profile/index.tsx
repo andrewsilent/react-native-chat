@@ -1,19 +1,23 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Pressable, Modal, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext, useSelector } from 'react-redux';
 
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
 import { UserAvatar } from '../../components/user-avatar';
 import { user } from '../../redux/reducers/user_reducer';
+import { CreateProfileProps, UserPhoto } from '../../interfaces';
+import { RootState } from '../../redux/store';
 
-export const CreateProfile = ({ isDefaultTheme }: CreateProfileProps) => {
+export const CreateProfile = ({ navigation }: CreateProfileProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isValidFirstName, setIsValidFirstName] = useState(0);
   const [isValidLastName, setIsValidLastName] = useState(0);
-  const [userPhoto, setUserPhoto] = useState({ localUri: '', height: undefined, width: undefined });
+  const [userPhoto, setUserPhoto] = useState<UserPhoto>({ localUri: '', height: undefined, width: undefined });
   const [modalVisible, setModalVisible] = useState(false);
 
   const {
@@ -118,9 +122,9 @@ export const CreateProfile = ({ isDefaultTheme }: CreateProfileProps) => {
           userPhoto,
         })
       );
-      // navigation.navigate('Start');
+      navigation.navigate('StartScreen');
     }
-  }, [firstName, lastName, userPhoto, dispatch, validateInput]);
+  }, [firstName, lastName, userPhoto, dispatch, validateInput, navigation]);
 
   const shootPhotoAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -187,7 +191,7 @@ export const CreateProfile = ({ isDefaultTheme }: CreateProfileProps) => {
           style={[styles.usernameInput, usernameInputTheme, lastNameStateTheme]}
         />
       </View>
-      <PrimaryButton isDefaultTheme={isDefaultTheme} onPressHandler={onPressHandler} text={'Save'} />
+      <PrimaryButton onPressHandler={onPressHandler} text={'Save'} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <Pressable onPress={() => setModalVisible(false)} style={[styles.modalContainer, modalContainerTheme]}>
           <View style={styles.modalWindow}>
@@ -292,7 +296,3 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 });
-
-interface CreateProfileProps {
-  isDefaultTheme: boolean;
-}

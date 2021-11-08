@@ -4,6 +4,7 @@ const initialState: Settings = {
   lang: 'us',
   theme: 'light',
   value: 0,
+  isDefaultTheme: true,
 };
 
 export const settings = createSlice({
@@ -20,4 +21,5 @@ interface Settings {
   lang: string;
   theme: string;
   value: number;
+  isDefaultTheme: boolean;
 }
