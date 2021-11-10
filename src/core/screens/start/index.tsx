@@ -19,7 +19,7 @@ export const StartScreen = ({ navigation }: StartScreenProps) => {
   const devicePlatform = Platform;
 
   useEffect(() => {
-    dispatch(view.actions.setDevicePlatform(devicePlatform));
+    dispatch(view.actions.setDevicePlatform(devicePlatform.OS));
   }, [dispatch, devicePlatform]);
 
   const containerTheme = useMemo(
@@ -46,7 +46,7 @@ export const StartScreen = ({ navigation }: StartScreenProps) => {
     console.log('Terms & Privacy Policy');
   }, []);
 
-  const onPressHandler = useCallback(() => {
+  const onPressHandler = useCallback<() => void>(() => {
     navigation.navigate('StepOne');
   }, [navigation]);
 

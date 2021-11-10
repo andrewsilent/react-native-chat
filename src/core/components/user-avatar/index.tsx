@@ -48,7 +48,7 @@ export const UserAvatar = ({ avatar, onAddPress, isDefaultTheme }: UserAvatarPro
   return (
     <View style={[styles.avatarWrapper, avatarWrapperTheme]}>
       {avatar?.localUri ? (
-        <TouchableOpacity onPress={() => onAddPress()}>
+        <TouchableOpacity onPress={onAddPress}>
           <View style={styles.avatarImageWrapper}>
             <ImageBackground
               source={{ uri: avatar?.localUri }}
@@ -67,7 +67,7 @@ export const UserAvatar = ({ avatar, onAddPress, isDefaultTheme }: UserAvatarPro
         </View>
       )}
       {!avatar?.localUri && (
-        <TouchableOpacity onPress={() => onAddPress()} style={[styles.addBtn]}>
+        <TouchableOpacity onPress={onAddPress} style={[styles.addBtn]}>
           <ImageBackground
             source={icons}
             style={[styles.addIcon, addIconTheme]}
@@ -142,6 +142,6 @@ const styles = StyleSheet.create({
 
 interface UserAvatarProps {
   avatar?: UserPhoto;
-  onAddPress: Function;
+  onAddPress: () => void;
   isDefaultTheme: boolean;
 }

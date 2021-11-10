@@ -22,11 +22,7 @@ export const PrimaryButton = ({ text, onPressHandler, isDisabled = false }: Prim
   );
 
   return (
-    <TouchableOpacity
-      style={[styles.primaryBtn, primaryBtnTheme]}
-      onPress={() => onPressHandler()}
-      disabled={isDisabled}
-    >
+    <TouchableOpacity style={[styles.primaryBtn, primaryBtnTheme]} onPress={onPressHandler} disabled={isDisabled}>
       <Text style={styles.primaryBtnText}>{text}</Text>
     </TouchableOpacity>
   );
@@ -52,5 +48,5 @@ const styles = StyleSheet.create({
 interface PrimaryButtonProps {
   text: string;
   isDisabled?: boolean;
-  onPressHandler: Function;
+  onPressHandler: () => void;
 }

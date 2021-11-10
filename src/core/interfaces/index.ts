@@ -13,7 +13,7 @@ export type CodeVerificationProps = NativeStackScreenProps<RootStackParamList, '
 export type CreateProfileProps = NativeStackScreenProps<RootStackParamList, 'CreateProfile'>;
 
 export interface UserPhoto {
-  height?: number;
-  width?: number;
-  localUri?: string;
+  height: number;
+  width: number;
+  localUri: string;
 }

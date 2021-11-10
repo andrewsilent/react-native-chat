@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Vibration, Modal, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { PhoneNumber } from 'libphonenumber-js/core';
@@ -13,10 +13,26 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
 
   const phoneNumber: PhoneNumber | undefined = useSelector((state: RootState) => state.user.phoneNumber);
   const control = '543211';
-  const [code, setCode] = useState('');
-  const [verified, setVerified] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [code, setCode] = useState<string>('');
+  const [verified, setVerified] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const codeInput = useRef<TextInput>(null);
+
+  const showModal = useCallback(() => {
+    setModalVisible(true);
+  }, []);
+
+  const hideModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
+  const handleTextBlur = useCallback(() => {
+    codeInput.current?.focus();
+  }, []);
+
+  const onChangeTextHandler = useCallback((value: string) => {
+    setCode(value);
+  }, []);
 
   useEffect(() => {
     if (code === control) {
@@ -26,10 +42,10 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
     if (code.length === control.length && code !== control) {
       Vibration.vibrate(100);
       setCode('');
-      setModalVisible(true);
-      setTimeout(() => setModalVisible(false), 3000);
+      showModal();
+      setTimeout(() => hideModal(), 3000);
     }
-  }, [control, code]);
+  }, [control, code, showModal, hideModal]);
 
   useEffect(() => {
     if (verified) {
@@ -104,14 +120,12 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
         autoFocus={true}
         keyboardType={'numeric'}
         maxLength={6}
-        onChangeText={text => {
-          setCode(text);
-        }}
+        onChangeText={onChangeTextHandler}
         value={code}
         contextMenuHidden={true}
         style={styles.codeInput}
         ref={codeInput}
-        onBlur={() => codeInput.current?.focus()}
+        onBlur={handleTextBlur}
       />
       <TouchableOpacity style={styles.resendBtn} onPress={resendBtnHandler}>
         <Text style={[styles.resendBtnText, resendBtnTextTheme]}>Resend Code</Text>
@@ -121,7 +135,7 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
           <View style={[styles.modalWindow, modalWindowTheme]}>
             <Text style={[styles.modalTitle]}>Error</Text>
             <Text style={[styles.modalMessage, modalMessageTheme]}>Wrong verification code</Text>
-            <Pressable onPress={() => setModalVisible(false)} style={styles.modalBtn}>
+            <Pressable onPress={hideModal} style={styles.modalBtn}>
               <Text style={[styles.modalBtnText, modalBtnTextTheme]}>OK</Text>
             </Pressable>
           </View>

@@ -7,7 +7,7 @@ const initialState: User = {
   firstName: '',
   lastName: '',
   phoneNumber: undefined,
-  userPhoto: { localUri: '', height: undefined, width: undefined },
+  userPhoto: undefined,
 };
 
 export const user = createSlice({
@@ -16,7 +16,15 @@ export const user = createSlice({
   reducers: {
     changeUserInfo: (state, action) => {
       const { payload } = action;
-      return { ...state, ...payload };
+      if (payload.firstName) {
+        state.firstName = payload.firstName;
+      }
+      if (payload.lastName) {
+        state.lastName = payload.lastName;
+      }
+      if (payload.userPhoto) {
+        state.userPhoto = payload.userPhoto;
+      }
     },
     setPhoneNumber: (state, action) => {
       state.phoneNumber = action.payload;
@@ -28,5 +36,5 @@ interface User {
   firstName: string;
   lastName: string;
   phoneNumber: PhoneNumber | undefined;
-  userPhoto: UserPhoto;
+  userPhoto: UserPhoto | undefined;
 }

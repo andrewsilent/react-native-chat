@@ -9,24 +9,21 @@ import { UserAvatar } from '../../components/user-avatar';
 import { user } from '../../redux/reducers/user_reducer';
 import { CreateProfileProps, UserPhoto } from '../../interfaces';
 import { RootState } from '../../redux/store';
+import { validateByRegexp } from '../../utils';
 
 export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [isValidFirstName, setIsValidFirstName] = useState(0);
-  const [isValidLastName, setIsValidLastName] = useState(0);
-  const [userPhoto, setUserPhoto] = useState<UserPhoto>({ localUri: '', height: undefined, width: undefined });
-  const [modalVisible, setModalVisible] = useState(false);
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [isValidFirstName, setIsValidFirstName] = useState<number>(0);
+  const [isValidLastName, setIsValidLastName] = useState<number>(0);
+  const [userPhoto, setUserPhoto] = useState<UserPhoto>();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const {
     store: { dispatch },
   } = useContext(ReactReduxContext);
-
-  const validateInput = useCallback((value, regexp) => {
-    return regexp.test(value);
-  }, []);
 
   const usernameInputTheme = useMemo(
     () => ({
@@ -98,18 +95,33 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
     setIsValidLastName(0);
   }, [lastName]);
 
-  const onAddPressHandler = useCallback(() => {
+  const showModal = useCallback(() => {
     setModalVisible(true);
+  }, []);
+
+  const hideModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
+  const onChangeFirstName = useCallback((value: string) => {
+    setFirstName(value);
+  }, []);
+
+  const onChangeLastName = useCallback((value: string) => {
+    setLastName(value);
   }, []);
 
   const onPressHandler = useCallback(() => {
     const firstNamePattern = /^[a-zA-Z]{3,16}$/;
     const lastNamePattern = /^[a-zA-Z]{0,20}$/;
-    const firstNameLocalState = validateInput(firstName, firstNamePattern);
-    const lastNameLocalState = validateInput(lastName, lastNamePattern);
-    validateInput(firstName, firstNamePattern) ? setIsValidFirstName(1) : setIsValidFirstName(2);
+
+    const firstNameLocalState = validateByRegexp(firstName, firstNamePattern);
+    const lastNameLocalState = validateByRegexp(lastName, lastNamePattern);
+
+    validateByRegexp(firstName, firstNamePattern) ? setIsValidFirstName(1) : setIsValidFirstName(2);
+
     lastName
-      ? validateInput(lastName, lastNamePattern)
+      ? validateByRegexp(lastName, lastNamePattern)
         ? setIsValidLastName(1)
         : setIsValidLastName(2)
       : setIsValidLastName(0);
@@ -124,7 +136,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
       );
       navigation.navigate('StartScreen');
     }
-  }, [firstName, lastName, userPhoto, dispatch, validateInput, navigation]);
+  }, [firstName, lastName, userPhoto, dispatch, navigation]);
 
   const shootPhotoAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -169,23 +181,19 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   return (
     <View style={[styles.container, containerTheme]}>
       <View style={styles.avatarWrapper}>
-        <UserAvatar onAddPress={onAddPressHandler} avatar={userPhoto} isDefaultTheme={isDefaultTheme} />
+        <UserAvatar onAddPress={showModal} avatar={userPhoto} isDefaultTheme={isDefaultTheme} />
       </View>
       <View style={styles.inputWrapper}>
         <TextInput
           value={firstName}
-          onChangeText={e => {
-            setFirstName(e);
-          }}
+          onChangeText={onChangeFirstName}
           placeholder="First Name (Required)"
           placeholderTextColor={theme.colors.neutral.disabled}
           style={[styles.usernameInput, usernameInputTheme, firstNameStateTheme]}
         />
         <TextInput
           value={lastName}
-          onChangeText={e => {
-            setLastName(e);
-          }}
+          onChangeText={onChangeLastName}
           placeholder="Last Name (Optional)"
           placeholderTextColor={theme.colors.neutral.disabled}
           style={[styles.usernameInput, usernameInputTheme, lastNameStateTheme]}
@@ -193,11 +201,11 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
       </View>
       <PrimaryButton onPressHandler={onPressHandler} text={'Save'} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <Pressable onPress={() => setModalVisible(false)} style={[styles.modalContainer, modalContainerTheme]}>
+        <Pressable onPress={hideModal} style={[styles.modalContainer, modalContainerTheme]}>
           <View style={styles.modalWindow}>
             <Pressable
               onPress={async () => {
-                setModalVisible(false);
+                hideModal();
                 const image = await shootPhotoAsync();
                 if (image) {
                   setUserPhoto(image);
@@ -208,7 +216,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
             </Pressable>
             <Pressable
               onPress={async () => {
-                setModalVisible(false);
+                hideModal();
                 const image = await openImagePickerAsync();
                 if (image) {
                   setUserPhoto(image);
