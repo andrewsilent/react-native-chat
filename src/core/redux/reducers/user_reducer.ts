@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PhoneNumber, UserPhoto } from '../../interfaces';
+import { PhoneNumber } from 'libphonenumber-js/core';
+
+import { UserPhoto } from '../../interfaces';
 
 const initialState: User = {
   firstName: '',
   lastName: '',
-  phoneNumber: { code: '', number: '' },
+  phoneNumber: undefined,
   userPhoto: { localUri: '', height: undefined, width: undefined },
 };
 
@@ -25,6 +27,6 @@ export const user = createSlice({
 interface User {
   firstName: string;
   lastName: string;
-  phoneNumber: PhoneNumber;
+  phoneNumber: PhoneNumber | undefined;
   userPhoto: UserPhoto;
 }

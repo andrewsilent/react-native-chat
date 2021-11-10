@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   StartScreen: undefined;
@@ -11,11 +11,6 @@ export type StartScreenProps = NativeStackScreenProps<RootStackParamList, 'Start
 export type StepOneProps = NativeStackScreenProps<RootStackParamList, 'StepOne'>;
 export type CodeVerificationProps = NativeStackScreenProps<RootStackParamList, 'CodeVerification'>;
 export type CreateProfileProps = NativeStackScreenProps<RootStackParamList, 'CreateProfile'>;
-
-export interface PhoneNumber {
-  code: string;
-  number: string;
-}
 
 export interface UserPhoto {
   height?: number;

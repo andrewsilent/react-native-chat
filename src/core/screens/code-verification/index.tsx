@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Vibration, Modal, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
+import { PhoneNumber } from 'libphonenumber-js/core';
 
 import { VerificationCode } from '../../components/verification-code';
-import { CodeVerificationProps, PhoneNumber } from '../../interfaces';
+import { CodeVerificationProps } from '../../interfaces';
 import { theme } from '../../theme';
 import { RootState } from '../../redux/store';
 
 export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
 
-  const phoneNumber: PhoneNumber = useSelector((state: RootState) => state.user.phoneNumber);
+  const phoneNumber: PhoneNumber | undefined = useSelector((state: RootState) => state.user.phoneNumber);
   const control = '543211';
   const [code, setCode] = useState('');
   const [verified, setVerified] = useState(false);
@@ -95,7 +96,7 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
       <View style={styles.title}>
         <Text style={[styles.titleText, titleTextTheme]}>Enter Code</Text>
         <Text style={[styles.subtitleText, subtitleTextTheme]}>
-          We have sent you an SMS with the code to +{phoneNumber.code} {phoneNumber.number}
+          We have sent you an SMS with the code to {phoneNumber && phoneNumber.number}
         </Text>
       </View>
       <VerificationCode isDefaultTheme={isDefaultTheme} code={code} codeLength={control.length} />
