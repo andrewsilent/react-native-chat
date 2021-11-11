@@ -11,7 +11,7 @@ import { RootState } from '../../redux/store';
 export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
 
-  const phoneNumber: PhoneNumber | undefined = useSelector((state: RootState) => state.user.phoneNumber);
+  const phoneNumber: Partial<PhoneNumber> | undefined = useSelector((state: RootState) => state.user.phoneNumber);
   const control = '543211';
   const [code, setCode] = useState<string>('');
   const [verified, setVerified] = useState<boolean>(false);

@@ -1,25 +1,20 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Text, View, Keyboard, StyleSheet } from 'react-native';
-import PhoneInput, {
-  isValidPhoneNumber,
-  parsePhoneNumber,
-  getCountryCallingCode,
-} from 'react-phone-number-input/mobile';
 import { PhoneNumber } from 'libphonenumber-js/core';
 import { ReactReduxContext, useSelector } from 'react-redux';
-import Input from 'react-phone-number-input/input';
 
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
 import { user } from '../../redux/reducers/user_reducer';
 import { RootState } from '../../redux/store';
 import { StepOneProps } from '../../interfaces';
+import { PhoneInputComponent } from '../../components/phone-input';
 
 export const StepOne = ({ navigation }: StepOneProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
-  const [isValid, setIsValid] = useState(false);
-  const [number, setNumber] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<PhoneNumber>();
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [phoneNumber, setPhoneNumber] = useState<Partial<PhoneNumber>>();
+
   const {
     store: { dispatch },
   } = useContext(ReactReduxContext);
@@ -29,10 +24,6 @@ export const StepOne = ({ navigation }: StepOneProps) => {
       Keyboard.dismiss();
     }
   }, [isValid]);
-
-  useEffect(() => {
-    setPhoneNumber(parsePhoneNumber(number));
-  }, []);
 
   const isDisabled = useMemo(() => !isValid, [isValid]);
 
@@ -71,41 +62,11 @@ export const StepOne = ({ navigation }: StepOneProps) => {
         </Text>
       </View>
       <View style={styles.phone}>
-        <PhoneInput
-          autoFocus
-          international
-          value={number}
-          defaultCountry="UA"
-          placeholder="Phone number"
-          onChange={value => {
-            if (value) {
-              setNumber(value as string);
-              setPhoneNumber(parsePhoneNumber(value as string));
-              setIsValid(isValidPhoneNumber(value as string | ''));
-            }
-          }}
-        />
-        <Input
-          style={{ display: 'none' }}
-          disabled
-          onChange={value => value}
-          value={getCountryCallingCode(phoneNumber?.country || 'UA')}
-          // flagComponent={{ country: 'UA', countryName: 'Ukraine' }}
-        />
-        <Input
-          style={{ display: 'none' }}
-          autoFocus
-          international
-          value={number}
-          defaultCountry="UA"
-          placeholder="Phone number"
-          onChange={value => {
-            if (value) {
-              setNumber(value as string);
-              setPhoneNumber(parsePhoneNumber(value as string));
-              setIsValid(isValidPhoneNumber(value as string | ''));
-            }
-          }}
+        <PhoneInputComponent
+          setIsValid={setIsValid}
+          setPhoneNumber={setPhoneNumber}
+          phoneNumber={phoneNumber}
+          isValid={isValid}
         />
       </View>
       <PrimaryButton text={'Continue'} isDisabled={isDisabled} onPressHandler={onPressHandler} />
@@ -140,5 +101,6 @@ const styles = StyleSheet.create({
   phone: {
     marginTop: 30,
     marginBottom: 30,
+    width: '100%',
   },
 });

@@ -35,6 +35,6 @@ export const user = createSlice({
 interface User {
   firstName: string;
   lastName: string;
-  phoneNumber: PhoneNumber | undefined;
+  phoneNumber: Partial<PhoneNumber> | undefined;
   userPhoto: UserPhoto | undefined;
 }

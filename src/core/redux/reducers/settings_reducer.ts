@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: Settings = {
   lang: 'us',
-  theme: 'light',
-  value: 0,
   isDefaultTheme: true,
 };
 
@@ -11,15 +9,13 @@ export const settings = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setValue: (state, action) => {
-      state.value = state.value + action.payload;
+    setTheme: (state, action) => {
+      state.isDefaultTheme = action.payload;
     },
   },
 });
 
 interface Settings {
   lang: string;
-  theme: string;
-  value: number;
   isDefaultTheme: boolean;
 }
