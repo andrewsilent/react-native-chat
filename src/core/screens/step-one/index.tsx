@@ -27,21 +27,14 @@ export const StepOne = ({ navigation }: StepOneProps) => {
 
   const isDisabled = useMemo(() => !isValid, [isValid]);
 
-  const containerTheme = useMemo(
+  const containerBackgroundTheme = useMemo(
     () => ({
       backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
     }),
     [isDefaultTheme]
   );
 
-  const titleTextTheme = useMemo(
-    () => ({
-      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-    }),
-    [isDefaultTheme]
-  );
-
-  const subtitleTextTheme = useMemo(
+  const textColorTheme = useMemo(
     () => ({
       color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
     }),
@@ -54,10 +47,10 @@ export const StepOne = ({ navigation }: StepOneProps) => {
   }, [dispatch, navigation, phoneNumber]);
 
   return (
-    <View style={[styles.container, containerTheme]}>
+    <View style={[styles.container, containerBackgroundTheme]}>
       <View style={styles.title}>
-        <Text style={[styles.titleText, titleTextTheme]}>Enter Your Phone Number</Text>
-        <Text style={[styles.subtitleText, subtitleTextTheme]}>
+        <Text style={[styles.titleText, textColorTheme]}>Enter Your Phone Number</Text>
+        <Text style={[styles.subtitleText, textColorTheme]}>
           Please confirm your country code and enter your phone number
         </Text>
       </View>

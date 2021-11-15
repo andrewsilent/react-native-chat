@@ -1,9 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { theme } from '../../theme';
+import { RootState } from '../../redux/store';
 
-export const VerificationCode = ({ isDefaultTheme, code, codeLength }: VerificationCodeProps) => {
+export const VerificationCode = ({ code, codeLength }: VerificationCodeProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
   const backgroundColor = useCallback(
     (id: number) => ({
       backgroundColor: code[id]
@@ -70,7 +74,6 @@ const styles = StyleSheet.create({
 });
 
 interface VerificationCodeProps {
-  isDefaultTheme: boolean;
   code: string;
   codeLength: number;
 }

@@ -2,8 +2,6 @@ import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { ReactReduxContext, useSelector } from 'react-redux';
 
-import start from '../../assets/start.png';
-import startDark from '../../assets/start-dark.png';
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
 import { view } from '../../redux/reducers/view_reducer';
@@ -12,6 +10,10 @@ import { StartScreenProps } from '../../interfaces';
 
 export const StartScreen = ({ navigation }: StartScreenProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
+  const image = useMemo(() => {
+    return isDefaultTheme ? require('../../assets/start.png') : require('../../assets/start-dark.png');
+  }, [isDefaultTheme]);
 
   const {
     store: { dispatch },
@@ -22,19 +24,14 @@ export const StartScreen = ({ navigation }: StartScreenProps) => {
     dispatch(view.actions.setDevicePlatform(devicePlatform.OS));
   }, [dispatch, devicePlatform]);
 
-  const containerTheme = useMemo(
-    () => ({ backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active }),
-    [isDefaultTheme]
-  );
-
-  const startTextTheme = useMemo(
+  const containerBackgroundTheme = useMemo(
     () => ({
-      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
+      backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
     }),
     [isDefaultTheme]
   );
 
-  const termsBtnTextTheme = useMemo(
+  const textColorTheme = useMemo(
     () => ({
       color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
     }),
@@ -51,12 +48,12 @@ export const StartScreen = ({ navigation }: StartScreenProps) => {
   }, [navigation]);
 
   return (
-    <View style={[styles.container, containerTheme]}>
-      <Image source={isDefaultTheme ? start : startDark} style={styles.startImg} />
-      <Text style={[styles.startText, startTextTheme]}>Connect easily with your family and friends over countries</Text>
+    <View style={[styles.container, containerBackgroundTheme]}>
+      <Image source={image} style={styles.startImg} />
+      <Text style={[styles.startText, textColorTheme]}>Connect easily with your family and friends over countries</Text>
       <View style={styles.controls}>
         <TouchableOpacity style={styles.termsBtn} onPress={termsBtnHandler}>
-          <Text style={[styles.termsBtnText, termsBtnTextTheme]}>Terms & Privacy Policy</Text>
+          <Text style={[styles.termsBtnText, textColorTheme]}>Terms & Privacy Policy</Text>
         </TouchableOpacity>
         <PrimaryButton onPressHandler={onPressHandler} text={'Start Messaging'} />
       </View>

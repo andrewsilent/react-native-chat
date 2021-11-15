@@ -181,7 +181,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   return (
     <View style={[styles.container, containerTheme]}>
       <View style={styles.avatarWrapper}>
-        <UserAvatar onAddPress={showModal} avatar={userPhoto} isDefaultTheme={isDefaultTheme} />
+        <UserAvatar onAddPress={showModal} avatar={userPhoto} />
       </View>
       <View style={styles.inputWrapper}>
         <TextInput
@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
   usernameInput: {
     fontFamily: 'Mulish',
     fontSize: 14,
-    lineHeight: 24,
     fontWeight: '600',
     width: '100%',
     padding: 8,

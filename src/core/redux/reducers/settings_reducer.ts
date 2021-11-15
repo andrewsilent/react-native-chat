@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: Settings = {
-  lang: 'us',
+  lang: 'en',
   isDefaultTheme: true,
 };
 

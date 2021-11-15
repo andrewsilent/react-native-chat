@@ -53,21 +53,14 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
     }
   }, [verified, navigation]);
 
-  const containerTheme = useMemo(
+  const containerBackgroundTheme = useMemo(
     () => ({
       backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
     }),
     [isDefaultTheme]
   );
 
-  const titleTextTheme = useMemo(
-    () => ({
-      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-    }),
-    [isDefaultTheme]
-  );
-
-  const subtitleTextTheme = useMemo(
+  const textColorTheme = useMemo(
     () => ({
       color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
     }),
@@ -88,34 +81,20 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
     [isDefaultTheme]
   );
 
-  const modalMessageTheme = useMemo(
-    () => ({
-      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-    }),
-    [isDefaultTheme]
-  );
-
-  const modalBtnTextTheme = useMemo(
-    () => ({
-      color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-    }),
-    [isDefaultTheme]
-  );
-
   const resendBtnHandler = () => {
     // eslint-disable-next-line no-console
     console.log('Resend Code');
   };
 
   return (
-    <View style={[styles.container, containerTheme]}>
+    <View style={[styles.container, containerBackgroundTheme]}>
       <View style={styles.title}>
-        <Text style={[styles.titleText, titleTextTheme]}>Enter Code</Text>
-        <Text style={[styles.subtitleText, subtitleTextTheme]}>
+        <Text style={[styles.titleText, textColorTheme]}>Enter Code</Text>
+        <Text style={[styles.subtitleText, textColorTheme]}>
           We have sent you an SMS with the code to {phoneNumber && phoneNumber.number}
         </Text>
       </View>
-      <VerificationCode isDefaultTheme={isDefaultTheme} code={code} codeLength={control.length} />
+      <VerificationCode code={code} codeLength={control.length} />
       <TextInput
         autoFocus={true}
         keyboardType={'numeric'}
@@ -134,9 +113,9 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
         <View style={styles.modalContainer}>
           <View style={[styles.modalWindow, modalWindowTheme]}>
             <Text style={[styles.modalTitle]}>Error</Text>
-            <Text style={[styles.modalMessage, modalMessageTheme]}>Wrong verification code</Text>
+            <Text style={[styles.modalMessage, textColorTheme]}>Wrong verification code</Text>
             <Pressable onPress={hideModal} style={styles.modalBtn}>
-              <Text style={[styles.modalBtnText, modalBtnTextTheme]}>OK</Text>
+              <Text style={[styles.modalBtnText, textColorTheme]}>OK</Text>
             </Pressable>
           </View>
         </View>

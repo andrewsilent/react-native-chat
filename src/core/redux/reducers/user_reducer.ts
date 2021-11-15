@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PhoneNumber } from 'libphonenumber-js/core';
+import { PhoneNumber } from 'libphonenumber-js/types';
 
 import { UserPhoto } from '../../interfaces';
 

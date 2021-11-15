@@ -1,11 +1,15 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ImageBackground, PixelRatio, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import icons from '../../assets/icons.png';
 import { theme } from '../../theme';
 import { UserPhoto } from '../../interfaces';
+import { RootState } from '../../redux/store';
 
-export const UserAvatar = ({ avatar, onAddPress, isDefaultTheme }: UserAvatarProps) => {
+export const UserAvatar = ({ avatar, onAddPress }: UserAvatarProps) => {
+  const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
+
   const avatarWrapperTheme = useMemo(
     () => ({
       backgroundColor: isDefaultTheme ? theme.colors.neutral.offWhite : theme.colors.neutral.dark,
@@ -143,5 +147,4 @@ const styles = StyleSheet.create({
 interface UserAvatarProps {
   avatar?: UserPhoto;
   onAddPress: () => void;
-  isDefaultTheme: boolean;
 }
