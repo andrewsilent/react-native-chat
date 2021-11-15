@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "v2",
-    "slug": "v2",
+    "name": "chat-ts",
+    "slug": "chat-ts",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/core/assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/core/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,12 +21,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/core/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/core/assets/favicon.png"
     }
   }
 }

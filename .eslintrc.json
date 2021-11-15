@@ -1,0 +1,86 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "react-native/react-native": true
+  },
+  "extends": [
+//    "eslint:recommended",
+//    "plugin:react/recommended",
+//    "plugin:react-hooks/recommended",
+//    "plugin:@typescript-eslint/recommended",
+//    "plugin:prettier/recommended",
+    "eslint:recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 11,
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "import",
+    "prettier",
+    "@typescript-eslint/eslint-plugin",
+    "react-hooks",
+    "react-native",
+    "@typescript-eslint"
+    //    "react"
+  ],
+  "rules": {
+    "prettier/prettier": 2,
+    "@typescript-eslint/comma-dangle": [0],
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-unused-vars": 2,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+//    "react-native/no-inline-styles": 2,
+//    "no-nested-ternary": "warn",
+    "comma-dangle": 0,
+    "no-undef": 2,
+    "no-debugger": 2,
+    "indent": [
+      "warn",
+      2
+    ],
+    "linebreak-style": [
+      "warn",
+      "unix"
+    ],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "semi": [
+      "warn",
+      "always"
+    ],
+    "max-len": [
+      2,
+      120
+    ],
+    "no-console": [
+      1,
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "fragment": "Fragment",
+      "version": "detect"
+    }
+  }
+}
