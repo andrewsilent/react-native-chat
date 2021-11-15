@@ -8,7 +8,7 @@ import { theme } from '../../theme';
 import { user } from '../../redux/reducers/user_reducer';
 import { RootState } from '../../redux/store';
 import { StepOneProps } from '../../interfaces';
-import { PhoneInputComponent } from '../../components/phone-input';
+import { PhoneInput } from '../../components/phone-input';
 
 export const StepOne = ({ navigation }: StepOneProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
@@ -61,8 +61,8 @@ export const StepOne = ({ navigation }: StepOneProps) => {
           Please confirm your country code and enter your phone number
         </Text>
       </View>
-      <View style={styles.phone}>
-        <PhoneInputComponent
+      <View style={styles.phoneInputContainer}>
+        <PhoneInput
           setIsValid={setIsValid}
           setPhoneNumber={setPhoneNumber}
           phoneNumber={phoneNumber}
@@ -77,7 +77,7 @@ export const StepOne = ({ navigation }: StepOneProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingHorizontal: 24,
     paddingBottom: 36,
@@ -98,9 +98,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
   },
-  phone: {
-    marginTop: 30,
-    marginBottom: 30,
+  phoneInputContainer: {
+    marginTop: 48,
+    marginBottom: 60,
     width: '100%',
+    flexGrow: 0,
+    flexBasis: 40,
+    overflow: 'hidden',
   },
 });
