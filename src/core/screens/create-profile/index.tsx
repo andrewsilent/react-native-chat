@@ -73,7 +73,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
 
   const modalItemTextTheme = useMemo(
     () => ({
-      backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.dark,
+      backgroundColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.active,
       color: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.line,
     }),
     [isDefaultTheme]
@@ -81,7 +81,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
 
   const modalItemDivider = useMemo(
     () => ({
-      borderBottomColor: isDefaultTheme ? theme.colors.neutral.line : theme.colors.neutral.weak,
+      borderBottomColor: isDefaultTheme ? theme.colors.neutral.line : theme.colors.neutral.dark,
       borderBottomWidth: 1,
     }),
     [isDefaultTheme]
@@ -178,6 +178,22 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
     };
   };
 
+  const shootPhotoHandler = useCallback(async () => {
+    hideModal();
+    const image = await shootPhotoAsync();
+    if (image) {
+      setUserPhoto(image);
+    }
+  }, [hideModal]);
+
+  const openImagePickerHandler = useCallback(async () => {
+    hideModal();
+    const image = await openImagePickerAsync();
+    if (image) {
+      setUserPhoto(image);
+    }
+  }, [hideModal]);
+
   return (
     <View style={[styles.container, containerTheme]}>
       <View style={styles.avatarWrapper}>
@@ -203,26 +219,10 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <Pressable onPress={hideModal} style={[styles.modalContainer, modalContainerTheme]}>
           <View style={styles.modalWindow}>
-            <Pressable
-              onPress={async () => {
-                hideModal();
-                const image = await shootPhotoAsync();
-                if (image) {
-                  setUserPhoto(image);
-                }
-              }}
-            >
-              <Text style={[styles.modalItemText, modalItemTextTheme, modalItemDivider]}>Choose from gallery</Text>
+            <Pressable style={[styles.modalWindowButton, modalItemDivider]} onPress={shootPhotoHandler}>
+              <Text style={[styles.modalItemText, modalItemTextTheme]}>Choose from gallery</Text>
             </Pressable>
-            <Pressable
-              onPress={async () => {
-                hideModal();
-                const image = await openImagePickerAsync();
-                if (image) {
-                  setUserPhoto(image);
-                }
-              }}
-            >
+            <Pressable style={styles.modalWindowButton} onPress={openImagePickerHandler}>
               <Text style={[styles.modalItemText, modalItemTextTheme]}>Take a photo</Text>
             </Pressable>
           </View>
@@ -281,15 +281,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modalWindow: {
-    width: 240,
     flex: 1,
-    flexGrow: 0,
-    flexBasis: 'auto',
     justifyContent: 'center',
-    alignSelf: 'center',
     borderRadius: 4,
-    overflow: 'hidden',
     shadowColor: theme.colors.neutral.dark,
+    marginHorizontal: '20%',
     shadowOpacity: 0.5,
     shadowRadius: 10,
     elevation: 20,
@@ -297,6 +293,11 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+  },
+  modalWindowButton: {
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+    borderBottomColor: '#999',
   },
   modalItemText: {
     fontSize: 16,
