@@ -5,11 +5,11 @@ import { ReactReduxContext, useSelector } from 'react-redux';
 
 import { PrimaryButton } from '../../components/buttons/primary';
 import { theme } from '../../theme';
-import { UserAvatar } from '../../components/user-avatar';
+import { UserCreateAvatar } from '../../components/user-create-avatar';
 import { user } from '../../redux/reducers/user_reducer';
 import { CreateProfileProps, UserPhoto } from '../../interfaces';
 import { RootState } from '../../redux/store';
-import { validateByRegexp } from '../../utils';
+import { formatUserName, validateByRegexp } from '../../utils';
 
 export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
@@ -104,11 +104,11 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   }, []);
 
   const onChangeFirstName = useCallback((value: string) => {
-    setFirstName(value);
+    setFirstName(value ? formatUserName(value) : '');
   }, []);
 
   const onChangeLastName = useCallback((value: string) => {
-    setLastName(value);
+    setLastName(value ? formatUserName(value) : '');
   }, []);
 
   const onPressHandler = useCallback(() => {
@@ -134,7 +134,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
           userPhoto,
         })
       );
-      navigation.navigate('StartScreen');
+      navigation.navigate('Settings');
     }
   }, [firstName, lastName, userPhoto, dispatch, navigation]);
 
@@ -197,7 +197,7 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   return (
     <View style={[styles.container, containerTheme]}>
       <View style={styles.avatarWrapper}>
-        <UserAvatar onAddPress={showModal} avatar={userPhoto} />
+        <UserCreateAvatar onAddPress={showModal} avatar={userPhoto} />
       </View>
       <View style={styles.inputWrapper}>
         <TextInput

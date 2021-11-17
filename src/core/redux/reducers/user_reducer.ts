@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PhoneNumber } from 'libphonenumber-js/types';
 
-import { UserPhoto } from '../../interfaces';
+import { User } from '../../interfaces';
 
 const initialState: User = {
   firstName: '',
   lastName: '',
-  phoneNumber: undefined,
+  phoneNumber: {},
   userPhoto: undefined,
 };
 
@@ -31,10 +30,3 @@ export const user = createSlice({
     },
   },
 });
-
-interface User {
-  firstName: string;
-  lastName: string;
-  phoneNumber: Partial<PhoneNumber> | undefined;
-  userPhoto: UserPhoto | undefined;
-}

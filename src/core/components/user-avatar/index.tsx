@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ImageBackground, PixelRatio, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ImageBackground, PixelRatio, ImageSourcePropType, FlexStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import icons from '../../assets/icons.png';
 import { theme } from '../../theme';
 import { UserPhoto } from '../../interfaces';
 import { RootState } from '../../redux/store';
 
-export const UserAvatar = ({ avatar, onAddPress }: UserAvatarProps) => {
+export const UserAvatar = ({ avatar, icons, userAvatarStyle }: UserAvatarProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
 
   const avatarWrapperTheme = useMemo(
@@ -17,6 +16,17 @@ export const UserAvatar = ({ avatar, onAddPress }: UserAvatarProps) => {
     [isDefaultTheme]
   );
 
+  const avatarImageScale = useMemo(
+    () =>
+      avatar?.height && avatar?.width && avatar.height > avatar.width
+        ? {
+            height: 'auto',
+            width: 50,
+          }
+        : { height: 50, width: 'auto' },
+    [avatar]
+  );
+
   const avatarPlaceholderStyleTheme = useMemo(
     () => ({
       tintColor: isDefaultTheme ? theme.colors.neutral.dark : theme.colors.neutral.white,
@@ -24,43 +34,16 @@ export const UserAvatar = ({ avatar, onAddPress }: UserAvatarProps) => {
     [isDefaultTheme]
   );
 
-  const addIconTheme = useMemo(
-    () => ({
-      backgroundColor: isDefaultTheme ? theme.colors.neutral.active : theme.colors.neutral.offWhite,
-    }),
-    [isDefaultTheme]
-  );
-
-  const addIconStyleTheme = useMemo(
-    () => ({
-      tintColor: isDefaultTheme ? theme.colors.neutral.white : theme.colors.neutral.dark,
-    }),
-    [isDefaultTheme]
-  );
-
-  const avatarImageScale = useMemo(
-    () =>
-      avatar?.height && avatar?.width && avatar.height > avatar.width
-        ? {
-            height: 'auto',
-            width: 100,
-          }
-        : { height: 100, width: 'auto' },
-    [avatar]
-  );
-
   return (
-    <View style={[styles.avatarWrapper, avatarWrapperTheme]}>
+    <View style={[styles.avatarWrapper, userAvatarStyle, avatarWrapperTheme]}>
       {avatar?.localUri ? (
-        <TouchableOpacity onPress={onAddPress}>
-          <View style={styles.avatarImageWrapper}>
-            <ImageBackground
-              source={{ uri: avatar?.localUri }}
-              style={styles.avatarImage}
-              imageStyle={[styles.avatarImageStyle, avatarImageScale]}
-            />
-          </View>
-        </TouchableOpacity>
+        <View style={styles.avatarImageWrapper}>
+          <ImageBackground
+            source={{ uri: avatar.localUri }}
+            style={styles.avatarImage}
+            imageStyle={[styles.avatarImageStyle, avatarImageScale]}
+          />
+        </View>
       ) : (
         <View style={styles.avatarPlaceholderWrapper}>
           <ImageBackground
@@ -69,15 +52,6 @@ export const UserAvatar = ({ avatar, onAddPress }: UserAvatarProps) => {
             imageStyle={[styles.avatarPlaceholderStyle, avatarPlaceholderStyleTheme]}
           />
         </View>
-      )}
-      {!avatar?.localUri && (
-        <TouchableOpacity onPress={onAddPress} style={[styles.addBtn]}>
-          <ImageBackground
-            source={icons}
-            style={[styles.addIcon, addIconTheme]}
-            imageStyle={[styles.addIconStyle, addIconStyleTheme]}
-          />
-        </TouchableOpacity>
       )}
     </View>
   );
@@ -91,8 +65,8 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexBasis: 'auto',
     borderRadius: 50,
-    minHeight: 100,
-    minWidth: 100,
+    minHeight: 50,
+    minWidth: 50,
     position: 'relative',
   },
   avatarImageWrapper: {
@@ -100,8 +74,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   avatarImage: {
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
   },
   avatarImageStyle: {
     resizeMode: 'cover',
@@ -119,32 +93,15 @@ const styles = StyleSheet.create({
   },
   avatarPlaceholderStyle: {
     resizeMode: 'cover',
-    width: PixelRatio.roundToNearestPixel(597),
-    height: PixelRatio.roundToNearestPixel(298),
-    top: -243,
-    left: -16,
-  },
-  addBtn: {
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-  addIcon: {
-    width: PixelRatio.roundToNearestPixel(24),
-    height: PixelRatio.roundToNearestPixel(24),
-    borderRadius: 12,
-  },
-  addIconStyle: {
-    resizeMode: 'cover',
-    width: PixelRatio.roundToNearestPixel(597),
-    height: PixelRatio.roundToNearestPixel(298),
-    top: -243,
-    left: -164,
+    width: PixelRatio.roundToNearestPixel(448),
+    height: PixelRatio.roundToNearestPixel(224),
+    top: -180,
+    left: -9,
   },
 });
 
 interface UserAvatarProps {
   avatar?: UserPhoto;
-  onAddPress: () => void;
+  icons: ImageSourcePropType;
+  userAvatarStyle: FlexStyle;
 }

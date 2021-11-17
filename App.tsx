@@ -9,6 +9,7 @@ import { StepOne } from './src/core/screens/step-one';
 import { StartScreen } from './src/core/screens/start';
 import { CodeVerification } from './src/core/screens/code-verification';
 import { CreateProfile } from './src/core/screens/create-profile';
+import { Settings } from './src/core/screens/settings-more';
 import { store } from './src/core/redux/store';
 import { RootStackParamList } from './src/core/interfaces';
 
@@ -66,6 +67,13 @@ export default function App() {
             component={CreateProfile}
             options={{
               title: 'Your Profile',
+            }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              title: 'More',
             }}
           />
         </Stack.Navigator>
