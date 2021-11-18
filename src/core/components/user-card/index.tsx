@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ImageSourcePropType, Text } from 'react-native';
 import { useSelector } from 'react-redux';
-import { parsePhoneNumber } from 'libphonenumber-js/mobile';
 
 import { theme } from '../../theme';
 import { User } from '../../interfaces';
 import { UserAvatar } from '../user-avatar';
 import { RootState } from '../../redux/store';
+import { formatUserPhone } from '../../utils';
 
 export const UserCard = ({ user, icons }: UserCardShortProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
@@ -26,7 +26,10 @@ export const UserCard = ({ user, icons }: UserCardShortProps) => {
   }, [user]);
 
   const formattedPhoneNumber = useMemo(() => {
-    return parsePhoneNumber(user.phoneNumber.number as string).formatInternational();
+    if (user.phoneNumber.number) {
+      return formatUserPhone(user.phoneNumber.number);
+    }
+    return '';
   }, [user]);
 
   return (
