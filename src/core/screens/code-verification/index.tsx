@@ -109,7 +109,7 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
       <TouchableOpacity style={styles.resendBtn} onPress={resendBtnHandler}>
         <Text style={[styles.resendBtnText, resendBtnTextTheme]}>Resend Code</Text>
       </TouchableOpacity>
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+      <Modal visible={modalVisible} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={[styles.modalWindow, modalWindowTheme]}>
             <Text style={[styles.modalTitle]}>Error</Text>
@@ -154,7 +154,9 @@ const styles = StyleSheet.create({
     width: 0,
     height: 0,
   },
-  resendBtn: {},
+  resendBtn: {
+    width: '100%',
+  },
   resendBtnText: {
     textAlign: 'center',
     fontFamily: 'Mulish',
@@ -167,19 +169,11 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignSelf: 'center',
-    height: '100%',
-    width: '100%',
+    alignItems: 'center',
   },
   modalWindow: {
     width: 300,
-    flex: 1,
-    flexGrow: 0,
-    flexBasis: 'auto',
-    justifyContent: 'center',
-    alignSelf: 'center',
     borderRadius: 4,
-    overflow: 'hidden',
     shadowColor: theme.colors.neutral.dark,
     shadowOpacity: 0.5,
     shadowRadius: 10,
@@ -199,7 +193,6 @@ const styles = StyleSheet.create({
     color: theme.colors.neutral.white,
   },
   modalMessage: {
-    height: '100%',
     fontFamily: 'Mulish',
     fontSize: 16,
     marginTop: 24,
@@ -207,13 +200,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   modalBtn: {
-    width: '100%',
+    marginVertical: 8,
+    padding: 12,
   },
   modalBtnText: {
     fontFamily: 'Mulish',
     fontSize: 20,
-    marginTop: 12,
-    padding: 12,
     textAlign: 'center',
     borderTopWidth: 1,
     borderColor: theme.colors.neutral.line,
