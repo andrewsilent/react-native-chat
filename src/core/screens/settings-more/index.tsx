@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,37 @@ import {
   ImageStyle,
   Alert,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { ReactReduxContext, useSelector } from 'react-redux';
 
 import icons from '../../assets/icons.png';
 import { theme } from '../../theme';
 import { RootState } from '../../redux/store';
 import { UserCard } from '../../components/user-card';
+import { user } from '../../redux/reducers/user_reducer';
+import { getRandomUsers } from '../../utils';
 import { MenuItemType, SettingsMenuItem, SettingsProps } from '../../interfaces';
 
 export const Settings = ({ navigation }: SettingsProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
-  const user = useSelector((state: RootState) => state.user);
+  const self = useSelector((state: RootState) => state.user);
+
+  const [contacts, setContacts] = useState([]);
+
+  const {
+    store: { dispatch },
+  } = useContext(ReactReduxContext);
+
+  const getContacts = async () => {
+    setContacts(await getRandomUsers(10));
+  };
+
+  useEffect(() => {
+    if (!contacts.length) {
+      getContacts();
+    }
+
+    dispatch(user.actions.setContacts(contacts));
+  }, [contacts, dispatch]);
 
   const containerTheme = useMemo(
     () => ({
@@ -213,7 +233,7 @@ export const Settings = ({ navigation }: SettingsProps) => {
   return (
     <SafeAreaView style={[styles.container, containerTheme]}>
       <TouchableOpacity onPress={onPressUserCardHandler}>
-        <UserCard user={user} icons={icons} />
+        <UserCard user={self} icons={icons} />
       </TouchableOpacity>
       <View style={styles.menuWrapper}>
         <FlatList data={menu} renderItem={renderItem} />

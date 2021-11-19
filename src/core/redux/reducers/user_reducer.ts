@@ -7,6 +7,8 @@ const initialState: User = {
   lastName: '',
   phoneNumber: {},
   userPhoto: undefined,
+  story: undefined,
+  contacts: [],
 };
 
 export const user = createSlice({
@@ -27,6 +29,9 @@ export const user = createSlice({
     },
     setPhoneNumber: (state, action) => {
       state.phoneNumber = action.payload;
+    },
+    setContacts: (state, action) => {
+      state.contacts = action.payload;
     },
   },
 });
