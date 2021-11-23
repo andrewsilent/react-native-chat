@@ -21,8 +21,9 @@ export interface User {
   lastName: string;
   phoneNumber: Partial<PhoneNumber>;
   userPhoto: UserPhoto | undefined;
-  story: Story | undefined;
+  story: Story | {};
   contacts: User[] | [];
+  lastActivity: Date | undefined;
 }
 
 export interface UserPhoto {
@@ -46,11 +47,10 @@ export const enum MenuItemType {
 }
 
 export interface Story {
-  slide: StorySlide[];
+  id: StorySlide;
 }
 
 export interface StorySlide {
-  id: string;
   image: string;
   created: Date;
 }
