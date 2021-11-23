@@ -12,19 +12,13 @@ import { StartScreen } from '../screens/start';
 import { StepOne } from '../screens/step-one';
 import { CodeVerification } from '../screens/code-verification';
 import { CreateProfile } from '../screens/create-profile';
+import { Contacts } from '../screens/contacts';
 
 const RootStack = createNativeStackNavigator();
 const StartStack = createNativeStackNavigator<RootStackParamList>();
 const SettingsStack = createNativeStackNavigator<RootStackParamList>();
 
 const Tab = createBottomTabNavigator();
-
-// Contacts stub
-const Contacts = () => (
-  <ScreenContainer>
-    <Text>Contacts page</Text>
-  </ScreenContainer>
-);
 
 // Chats stub
 const Chats = () => (
@@ -98,17 +92,29 @@ const TabsNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="More"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: store.getState().settings.isDefaultTheme
-            ? theme.colors.neutral.white
-            : theme.colors.neutral.active,
-        },
-        headerShadowVisible: false,
-        headerTintColor: store.getState().settings.isDefaultTheme
-          ? theme.colors.neutral.active
-          : theme.colors.neutral.white,
-      }}
+      screenOptions={
+        store.getState().settings.isDefaultTheme
+          ? {
+              headerStyle: {
+                backgroundColor: theme.colors.neutral.white,
+              },
+              tabBarStyle: { backgroundColor: theme.colors.neutral.white },
+              headerTintColor: theme.colors.neutral.active,
+              tabBarActiveTintColor: theme.colors.neutral.active,
+              tabBarInactiveTintColor: theme.colors.neutral.active,
+              headerShadowVisible: false,
+            }
+          : {
+              headerStyle: {
+                backgroundColor: theme.colors.neutral.active,
+              },
+              tabBarStyle: { backgroundColor: theme.colors.neutral.active },
+              headerTintColor: theme.colors.neutral.white,
+              tabBarActiveTintColor: theme.colors.neutral.white,
+              tabBarInactiveTintColor: theme.colors.neutral.white,
+              headerShadowVisible: false,
+            }
+      }
     >
       <Tab.Screen name="Contacts" component={Contacts} />
       <Tab.Screen name="Chats" component={Chats} />

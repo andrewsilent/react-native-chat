@@ -6,7 +6,7 @@ import { theme } from '../../theme';
 import { User } from '../../interfaces';
 import { UserAvatar } from '../user-avatar';
 import { RootState } from '../../redux/store';
-import { formatUserPhone } from '../../utils';
+import { formatUserPhone, getFullName } from '../../utils';
 
 export const UserCard = ({ user, icons }: UserCardShortProps) => {
   const isDefaultTheme = useSelector((state: RootState) => state.settings.isDefaultTheme);
@@ -19,10 +19,7 @@ export const UserCard = ({ user, icons }: UserCardShortProps) => {
   );
 
   const userFullName = useMemo(() => {
-    if (user.lastName) {
-      return `${user.firstName} ${user.lastName}`;
-    }
-    return user.firstName;
+    return getFullName(user);
   }, [user]);
 
   const formattedPhoneNumber = useMemo(() => {
