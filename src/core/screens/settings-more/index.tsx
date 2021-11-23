@@ -36,11 +36,11 @@ export const Settings = ({ navigation }: SettingsProps) => {
   };
 
   useEffect(() => {
-    if (!contacts.length) {
+    if (contacts.length) {
+      dispatch(user.actions.setContacts(contacts));
+    } else {
       getContacts();
     }
-
-    dispatch(user.actions.setContacts(contacts));
   }, [contacts, dispatch]);
 
   const containerTheme = useMemo(
@@ -199,7 +199,7 @@ export const Settings = ({ navigation }: SettingsProps) => {
 
   const onPressUserCardHandler = useCallback(() => {
     navigation.navigate('CreateProfile');
-  }, []);
+  }, [navigation]);
 
   const renderItem = useCallback(
     ({ item }: { item: Partial<SettingsMenuItem> }) => {

@@ -104,11 +104,11 @@ export const CreateProfile = ({ navigation }: CreateProfileProps) => {
   }, []);
 
   const onChangeFirstName = useCallback((value: string) => {
-    setFirstName(value ? formatUserName(value) : '');
+    setFirstName(value ? formatUserName(value.trim()) : '');
   }, []);
 
   const onChangeLastName = useCallback((value: string) => {
-    setLastName(value ? formatUserName(value) : '');
+    setLastName(value ? formatUserName(value.trim()) : '');
   }, []);
 
   const onPressHandler = useCallback(() => {
