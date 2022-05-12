@@ -109,7 +109,7 @@ export const CodeVerification = ({ navigation }: CodeVerificationProps) => {
       <TouchableOpacity style={styles.resendBtn} onPress={resendBtnHandler}>
         <Text style={[styles.resendBtnText, resendBtnTextTheme]}>Resend Code</Text>
       </TouchableOpacity>
-      <Modal visible={modalVisible} animationType="fade">
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={[styles.modalWindow, modalWindowTheme]}>
             <Text style={[styles.modalTitle]}>Error</Text>

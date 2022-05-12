@@ -100,7 +100,7 @@ const TabsNavigator = () => {
               },
               tabBarStyle: { backgroundColor: theme.colors.neutral.white },
               headerTintColor: theme.colors.neutral.active,
-              tabBarActiveTintColor: theme.colors.neutral.active,
+              tabBarActiveTintColor: theme.colors.brandColor.default,
               tabBarInactiveTintColor: theme.colors.neutral.active,
               headerShadowVisible: false,
             }
@@ -110,7 +110,7 @@ const TabsNavigator = () => {
               },
               tabBarStyle: { backgroundColor: theme.colors.neutral.active },
               headerTintColor: theme.colors.neutral.white,
-              tabBarActiveTintColor: theme.colors.neutral.white,
+              tabBarActiveTintColor: theme.colors.brandColor.darkMode,
               tabBarInactiveTintColor: theme.colors.neutral.white,
               headerShadowVisible: false,
             }
